@@ -9,7 +9,10 @@ import { Link } from "react-router-dom";
 
 function TodayPage({ token }) {
   const [todayHabits, setTodayHabits] = useState([]);
-  console.log("ttt", token);
+  const [checkedIds, setCheckedIds] = useState([]);
+  const [dones, setDones] = useState(0);
+
+  const percentageDones = Math.round((dones / todayHabits.length) * 100);
 
   useEffect(() => {
     const URL =
@@ -27,7 +30,7 @@ function TodayPage({ token }) {
     promise.catch((err) => console.log(err.response.data));
   }, []);
 
-  console.log("habits", todayHabits);
+  // console.log(Math.round((dones / todayHabits.length) * 100));
 
   return (
     <>
@@ -46,17 +49,23 @@ function TodayPage({ token }) {
       <ContentStyle>
         <Container>
           <h1>Segunda, 17/05</h1>
-          <p>Nenhum hábito concluído ainda</p>
+          {dones > 0 ? (
+            <h2>{percentageDones}% dos hábitos concluídos</h2>
+          ) : (
+            <p>Nenhum hábito concluído ainda</p>
+          )}
         </Container>
 
-        {/* {todayHabits.map((h) => (
-          <Habit />
-        ))} */}
-
-        <Habit />
-        <Habit />
-        <Habit />
-        <Habit />
+        {todayHabits.map((h) => (
+          <Habit
+            tHabits={h}
+            checkedIds={checkedIds}
+            setCheckedIds={setCheckedIds}
+            dones={dones}
+            setDones={setDones}
+            token={token}
+          />
+        ))}
       </ContentStyle>
 
       <FooterStyle>
@@ -67,7 +76,7 @@ function TodayPage({ token }) {
         <Link to="/hoje">
           <div>
             <CircularProgressbar
-              value=""
+              value={percentageDones}
               text="Hoje"
               background
               backgroundPadding={6}
@@ -185,6 +194,17 @@ const Container = styled.div`
     font-size: 22.976px;
     line-height: 29px;
     color: #126ba5;
+  }
+  h2 {
+    margin-top: 1px;
+    margin-bottom: 20px;
+    font-family: "Lexend Deca";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17.976px;
+    line-height: 22px;
+
+    color: #8fc549;
   }
   p {
     font-family: "Lexend Deca";
