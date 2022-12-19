@@ -4,8 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/images/Group 8.png";
 import { ThreeDots } from "react-loader-spinner";
+import { useGlobalContext } from "../context";
 
-function Home({ setToken, token }) {
+function Home() {
+  const { setToken, token } = useGlobalContext();
+
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

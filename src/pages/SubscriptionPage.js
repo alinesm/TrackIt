@@ -4,13 +4,16 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/images/Group 8.png";
 import { ThreeDots } from "react-loader-spinner";
+import { useGlobalContext } from "../context";
 
 function Home() {
+  const { photo, setPhoto } = useGlobalContext();
+
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [photo, setPhoto] = useState("");
+  // const [photo, setPhoto] = useState("");
   const navigate = useNavigate();
 
   function handleError(err) {

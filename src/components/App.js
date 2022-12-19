@@ -10,19 +10,16 @@ import Story from "../pages/Story";
 import { AppProvider } from "../context";
 
 function App() {
-  const [token, setToken] = useState("");
+  // const [token, setToken] = useState("");
   return (
     <BrowserRouter>
       <AppProvider>
         <MasterContainerStyle>
           <Routes>
-            <Route
-              path="/"
-              element={<Home setToken={setToken} token={token} />}
-            />
+            <Route path="/" element={<Home />} />
             <Route path="/cadastro" element={<SubscriptionPage />} />
-            <Route path="/hoje" element={<TodayPage token={token} />} />
-            <Route path="/habitos" element={<MyHabits token={token} />} />
+            <Route path="/hoje" element={<TodayPage />} />
+            <Route path="/habitos" element={<MyHabits />} />
             <Route path="/historico" element={<Story />} />
           </Routes>
         </MasterContainerStyle>

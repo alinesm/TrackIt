@@ -2,8 +2,11 @@ import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
 import checkImage from "../assets/images/Vector.png";
+import { useGlobalContext } from "../context";
 
-function Habit({ token, tHabits, checkedIds, setCheckedIds, dones, setDones }) {
+function Habit({ tHabits, checkedIds, setCheckedIds, dones, setDones }) {
+  const { setToken, token } = useGlobalContext();
+
   const [isDone, setIsDone] = useState(tHabits.done);
 
   function handleCheckBox() {

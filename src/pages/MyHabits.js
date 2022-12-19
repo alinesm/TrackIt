@@ -5,6 +5,7 @@ import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/images/TrackIt.png";
 import TodoHabit from "../components/TodoHabit";
+import { useGlobalContext } from "../context";
 
 // const weekDay = ["D", "S", "T", "Q", "Q", "S", "S"];
 const weekDay = [
@@ -38,7 +39,9 @@ const weekDay = [
   },
 ];
 
-function MyHabits({ token }) {
+function MyHabits() {
+  const { setToken, token } = useGlobalContext();
+
   const [openAdd, setOpenAdd] = useState(false);
   const [habitName, setHabitName] = useState("");
   const [listWeeks, setListWeeks] = useState([]);

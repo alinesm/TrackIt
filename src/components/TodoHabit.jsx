@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
+import { useGlobalContext } from "../context";
 const weekDay = [
   {
     id: 0,
@@ -37,9 +38,11 @@ function TodoHabit({
   habitData,
   listHabits,
   setListHabits,
-  token,
+
   setIsLoading,
 }) {
+  const { setToken, token } = useGlobalContext();
+
   function handleDelete(habitData) {
     const confirm = window.confirm("Tem certeza que quer deletar esse hábito?");
 
