@@ -2,19 +2,22 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
-
 const weekDay = [
   {
-    id: 1,
+    id: 0,
     name: "D",
   },
   {
-    id: 2,
+    id: 1,
     name: "S",
   },
   {
-    id: 3,
+    id: 2,
     name: "T",
+  },
+  {
+    id: 3,
+    name: "Q",
   },
   {
     id: 4,
@@ -22,38 +25,50 @@ const weekDay = [
   },
   {
     id: 5,
-    name: "Q",
+    name: "S",
   },
   {
     id: 6,
     name: "S",
   },
-  {
-    id: 7,
-    name: "S",
-  },
 ];
 
-function TodoHabit({ habitData, listHabits, setListHabits, token }) {
+function TodoHabit({
+  habitData,
+  listHabits,
+  setListHabits,
+  token,
+  setIsLoading,
+}) {
   function handleDelete(habitData) {
-    const id = habitData.id;
+    const confirm = window.confirm("Tem certeza que quer deletar esse hábito?");
 
-    const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`;
+    if (confirm) {
+      setIsLoading(true);
+      const id = habitData.id;
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+      const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`;
 
-    const promise = axios.delete(URL, config);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-    promise.then((res) => {
-      const filteredHabits = listHabits.filter((h) => h.id !== habitData.id);
-      console.log("New Filtered Habits: ", filteredHabits);
-      setListHabits([...filteredHabits]);
-    });
-    promise.catch((err) => console.log("erro", err));
+      const promise = axios.delete(URL, config);
+
+      promise.then((res) => {
+        const filteredHabits = listHabits.filter((h) => h.id !== habitData.id);
+        console.log("New Filtered Habits: ", filteredHabits);
+        setListHabits([...filteredHabits]);
+        setIsLoading(false);
+      });
+      promise.catch((err) => {
+        alert("Erro ao deletar hábito");
+        setIsLoading(false);
+        console.log("erro", err);
+      });
+    }
   }
 
   return (

@@ -3,14 +3,23 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/images/Group 8.png";
+import { ThreeDots } from "react-loader-spinner";
 
 function Home({ setToken, token }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  function handleError(err) {
+    alert("Email ou senha incorretos");
+    setIsLoading(false);
+    console.log(err);
+  }
+
   function handleLogin(e) {
     e.preventDefault();
+    setIsLoading(true);
     const URL =
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
     const body = { email, password };
@@ -20,7 +29,7 @@ function Home({ setToken, token }) {
       setToken(res.data.token);
       navigate("/hoje");
     });
-    promise.catch((err) => alert(err.response.data.message));
+    promise.catch((err) => handleError(err));
   }
 
   console.log(token);
@@ -38,16 +47,27 @@ function Home({ setToken, token }) {
             value={email}
             type="email"
             placeholder="email..."
+            disabled={isLoading}
           />
           <input
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             type="password"
             placeholder="senha..."
+            disabled={isLoading}
           />
-
           <button type="submit" onClick={handleLogin}>
-            Entrar
+            {isLoading ? (
+              <ThreeDots
+                height="15"
+                width="50"
+                radius="6"
+                color="#fff"
+                ariaLabel="Loading"
+              />
+            ) : (
+              "Entrar"
+            )}{" "}
           </button>
         </form>
       </InputsContainer>
@@ -87,6 +107,7 @@ const InputsContainer = styled.div`
   display: flex;
   margin-top: 36px;
   width: 303px;
+
   input {
     width: 100%;
     height: 45px;
@@ -111,6 +132,9 @@ const InputsContainer = styled.div`
     }
   }
   button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 102%;
     height: 45px;
     border: none;

@@ -9,16 +9,20 @@ import TodoHabit from "../components/TodoHabit";
 // const weekDay = ["D", "S", "T", "Q", "Q", "S", "S"];
 const weekDay = [
   {
-    id: 1,
+    id: 0,
     name: "D",
   },
   {
-    id: 2,
+    id: 1,
     name: "S",
   },
   {
-    id: 3,
+    id: 2,
     name: "T",
+  },
+  {
+    id: 3,
+    name: "Q",
   },
   {
     id: 4,
@@ -26,14 +30,10 @@ const weekDay = [
   },
   {
     id: 5,
-    name: "Q",
-  },
-  {
-    id: 6,
     name: "S",
   },
   {
-    id: 7,
+    id: 6,
     name: "S",
   },
 ];
@@ -43,6 +43,7 @@ function MyHabits({ token }) {
   const [habitName, setHabitName] = useState("");
   const [listWeeks, setListWeeks] = useState([]);
   const [listHabits, setListHabits] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const URL =
@@ -107,7 +108,7 @@ function MyHabits({ token }) {
   }
 
   return (
-    <>
+    <div>
       <HeaderStyle>
         <LogoStyle>
           <img src={logo} alt="" />
@@ -157,6 +158,7 @@ function MyHabits({ token }) {
               listHabits={listHabits}
               setListHabits={setListHabits}
               token={token}
+              setIsLoading={setIsLoading}
             />
           ))
         ) : (
@@ -196,15 +198,17 @@ function MyHabits({ token }) {
           <p>Histórico</p>
         </Link>
       </FooterStyle>
-    </>
+    </div>
   );
 }
 
 export default MyHabits;
 
 const HeaderStyle = styled.div`
+  position: fixed;
+  width: 375px;
+  z-index: 1;
   height: 70px;
-  left: 0px;
   top: 0px;
   background: #126ba5;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
@@ -232,17 +236,18 @@ const PhotoStyle = styled.div`
 `;
 
 const ContentStyle = styled.div`
-  padding: 20px 20px;
-  height: 370px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 110px 20px 50px 20px;
+  height: calc(100vh - 80px);
   background-color: #e5e5e5;
   p {
-    margin-top: 28px;
     font-family: "Lexend Deca";
     font-style: normal;
     font-weight: 400;
     font-size: 17.976px;
     line-height: 22px;
-    color: #666666;
+    color: #bababa;
   }
 `;
 
@@ -254,8 +259,6 @@ const FooterStyle = styled.div`
   width: 375px;
   height: 70px;
   position: fixed;
-  /* position: relative; */
-  left: 0px;
   bottom: 0;
   z-index: 2;
   background: #ffffff;
@@ -277,7 +280,6 @@ const FooterStyle = styled.div`
     height: 91px;
     z-index: 5;
     margin-bottom: 50px;
-    /* position: absolute; */
   }
 `;
 
@@ -309,25 +311,7 @@ const Container = styled.div`
   }
 `;
 
-const WeekdaysStyle = styled.div`
-  /* border: 2px solid red; */
-  /* button {
-    margin-right: 4px;
-    width: 30px;
-    height: 30px;
-    left: 36px;
-    top: 218px;
-    background: ${(props) => (props.colorweek ? "yellow" : "white")};
-    border: 1px solid #d5d5d5;
-    border-radius: 5px;
-    font-family: "Lexend Deca";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 19.976px;
-    line-height: 25px;
-    color: "black";
-  } */
-`;
+const WeekdaysStyle = styled.div``;
 
 const ButtonStyle = styled.button`
   margin-right: 4px;

@@ -6,12 +6,14 @@ import Habit from "../components/Habit";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
+import "dayjs/locale/pt-br";
 
 function TodayPage({ token }) {
   const [todayHabits, setTodayHabits] = useState([]);
   const [checkedIds, setCheckedIds] = useState([]);
   const [dones, setDones] = useState(0);
-
+  const today = dayjs().locale("pt-br").format("dddd, DD/MM");
   const percentageDones = Math.round((dones / todayHabits.length) * 100);
 
   useEffect(() => {
@@ -33,7 +35,7 @@ function TodayPage({ token }) {
   // console.log(Math.round((dones / todayHabits.length) * 100));
 
   return (
-    <>
+    <MainContainer>
       <HeaderStyle>
         <LogoStyle>
           <img src={logo} alt="" />
@@ -48,7 +50,7 @@ function TodayPage({ token }) {
 
       <ContentStyle>
         <Container>
-          <h1>Segunda, 17/05</h1>
+          <h1>{today[0].toUpperCase() + today.slice(1)}</h1>
           {dones > 0 ? (
             <h2>{percentageDones}% dos hábitos concluídos</h2>
           ) : (
@@ -86,7 +88,6 @@ function TodayPage({ token }) {
                 pathColor: "#fff",
                 trailColor: "transparent",
                 textSize: "20px",
-                // textAlign: "center",
               })}
             />
           </div>
@@ -96,15 +97,21 @@ function TodayPage({ token }) {
           <p>Histórico</p>
         </Link>
       </FooterStyle>
-    </>
+    </MainContainer>
   );
 }
 
 export default TodayPage;
 
+const MainContainer = styled.div`
+  width: 375px;
+`;
+
 const HeaderStyle = styled.div`
+  position: fixed;
+  width: 375px;
+  z-index: 1;
   height: 70px;
-  left: 0px;
   top: 0px;
   background: #126ba5;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
@@ -132,19 +139,17 @@ const PhotoStyle = styled.div`
 `;
 
 const ContentStyle = styled.div`
-  overflow-y: auto;
-  padding: 20px 20px 50px 20px;
-  height: 375px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 110px 20px 50px 20px;
+  height: calc(100vh - 80px);
   background-color: #e5e5e5;
-  /* margin-bottom: 50px; */
   p {
-    /* margin-top: 28px; */
     font-family: "Lexend Deca";
     font-style: normal;
     font-weight: 400;
     font-size: 17.976px;
     line-height: 22px;
-
     color: #bababa;
   }
 `;
@@ -157,8 +162,6 @@ const FooterStyle = styled.div`
   width: 375px;
   height: 70px;
   position: fixed;
-  /* position: relative; */
-  left: 0px;
   bottom: 0;
   z-index: 2;
   background: #ffffff;
@@ -169,7 +172,6 @@ const FooterStyle = styled.div`
     font-size: 17.976px;
     line-height: 22px;
     text-align: center;
-
     color: #52b6ff;
   }
   div {
@@ -180,7 +182,6 @@ const FooterStyle = styled.div`
     height: 91px;
     z-index: 5;
     margin-bottom: 50px;
-    /* position: absolute; */
   }
 `;
 
@@ -213,7 +214,6 @@ const Container = styled.div`
     font-size: 17.976px;
     line-height: 22px;
     margin-bottom: 18px;
-
     color: #bababa;
   }
 `;

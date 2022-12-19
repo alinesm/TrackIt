@@ -3,16 +3,25 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/images/Group 8.png";
+import { ThreeDots } from "react-loader-spinner";
 
 function Home() {
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState("");
   const navigate = useNavigate();
 
+  function handleError(err) {
+    alert("Dados ou campos inválidos");
+    setIsLoading(false);
+    console.log(err);
+  }
+
   function handleSubscription(e) {
     e.preventDefault();
+    setIsLoading(true);
     const URL =
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
     const body = { email: email, name: name, image: photo, password: password };
@@ -22,7 +31,7 @@ function Home() {
       alert("Cadastro realizado!");
       navigate("/");
     });
-    promise.catch((err) => alert(err.response.data.message));
+    promise.catch((err) => handleError(err));
   }
 
   return (
@@ -38,27 +47,41 @@ function Home() {
             value={email}
             type="email"
             placeholder="email"
+            disabled={isLoading}
           />
           <input
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             type="password"
             placeholder="senha"
+            disabled={isLoading}
           />
           <input
             onChange={(e) => setName(e.target.value)}
             value={name}
             type="text"
             placeholder="nome"
+            disabled={isLoading}
           />
           <input
             onChange={(e) => setPhoto(e.target.value)}
             value={photo}
             type="url"
             placeholder="foto"
+            disabled={isLoading}
           />
           <button type="submit" onClick={handleSubscription}>
-            Entrar
+            {isLoading ? (
+              <ThreeDots
+                height="15"
+                width="50"
+                radius="6"
+                color="#fff"
+                ariaLabel="Loading"
+              />
+            ) : (
+              "Cadastrar"
+            )}
           </button>
         </form>
       </InputsContainer>
@@ -120,6 +143,9 @@ const InputsContainer = styled.div`
     }
   }
   button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 102%;
     height: 45px;
     border: none;
