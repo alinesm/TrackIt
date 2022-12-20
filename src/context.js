@@ -3,7 +3,8 @@ const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
   const [token, setToken] = useState("");
-  const [photo, setPhoto] = useState("");
+  // const [photo, setPhoto] = useState("");
+  const [userInfo, setUserInfo] = useState({});
   const [todayHabits, setTodayHabits] = useState([]);
 
   const done = todayHabits.filter((h) => h.done);
@@ -19,8 +20,10 @@ const AppProvider = ({ children }) => {
       value={{
         token,
         setToken,
-        photo,
-        setPhoto,
+        userInfo,
+        setUserInfo,
+        // photo,
+        // setPhoto,
         done,
         todayHabits,
         setTodayHabits,

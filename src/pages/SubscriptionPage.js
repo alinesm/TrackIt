@@ -7,13 +7,13 @@ import { ThreeDots } from "react-loader-spinner";
 import { useGlobalContext } from "../context";
 
 function Home() {
-  const { photo, setPhoto } = useGlobalContext();
+  const { setUserInfo } = useGlobalContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  // const [photo, setPhoto] = useState("");
+  const [image, setImage] = useState("");
   const navigate = useNavigate();
 
   function handleError(err) {
@@ -27,7 +27,8 @@ function Home() {
     setIsLoading(true);
     const URL =
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
-    const body = { email: email, name: name, image: photo, password: password };
+    const body = { email: email, name: name, image: image, password: password };
+    setUserInfo({ email: email, name: name, image: image, password: password });
 
     const promise = axios.post(URL, body);
     promise.then((res) => {
@@ -71,8 +72,8 @@ function Home() {
           />
           <input
             data-test="user-image-input"
-            onChange={(e) => setPhoto(e.target.value)}
-            value={photo}
+            onChange={(e) => setImage(e.target.value)}
+            value={image}
             type="url"
             placeholder="foto"
             disabled={isLoading}

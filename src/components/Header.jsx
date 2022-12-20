@@ -4,7 +4,7 @@ import logo from "../assets/images/TrackIt.png";
 import { useGlobalContext } from "../context";
 
 function Header() {
-  const { photo, token } = useGlobalContext();
+  const { userInfo, token } = useGlobalContext();
 
   if (token) {
     return (
@@ -13,7 +13,7 @@ function Header() {
           <img src={logo} alt="" />
         </LogoStyle>
         <PhotoStyle>
-          <img src={photo} alt="" />
+          <img src={userInfo.image} alt="" />
         </PhotoStyle>
       </HeaderStyle>
     );
