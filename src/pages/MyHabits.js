@@ -87,6 +87,8 @@ function MyHabits() {
 
     if (listWeeks.length === 0) {
       alert("Selecione pelo um dia");
+    } else if (!habitName) {
+      alert("Adicione o título do hábito");
     } else {
       const url_post =
         "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
@@ -180,16 +182,14 @@ function MyHabits() {
           </AddHabitStyle>
         )}
         {listHabits.length > 0 ? (
-          listHabits
-            .reverse()
-            .map((h) => (
-              <TodoHabit
-                habitData={h}
-                listHabits={listHabits}
-                setListHabits={setListHabits}
-                setIsLoading={setIsLoading}
-              />
-            ))
+          listHabits.map((h) => (
+            <TodoHabit
+              habitData={h}
+              listHabits={listHabits}
+              setListHabits={setListHabits}
+              setIsLoading={setIsLoading}
+            />
+          ))
         ) : (
           <p>
             {" "}

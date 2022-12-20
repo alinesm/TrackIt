@@ -61,7 +61,12 @@ function Home() {
             placeholder="senha..."
             disabled={isLoading}
           />
-          <button data-test="login-btn" type="submit" onClick={handleLogin}>
+          <button
+            data-test="login-btn"
+            disabled={isLoading}
+            type="submit"
+            onClick={handleLogin}
+          >
             {isLoading ? (
               <ThreeDots
                 height="15"

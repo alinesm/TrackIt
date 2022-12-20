@@ -79,6 +79,7 @@ function Home() {
           />
           <button
             data-test="signup-btn"
+            disabled={isLoading}
             type="submit"
             onClick={handleSubscription}
           >
