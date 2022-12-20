@@ -34,14 +34,8 @@ const weekDay = [
   },
 ];
 
-function TodoHabit({
-  habitData,
-  listHabits,
-  setListHabits,
-
-  setIsLoading,
-}) {
-  const { setToken, token } = useGlobalContext();
+function TodoHabit({ habitData, listHabits, setListHabits, setIsLoading }) {
+  const { token } = useGlobalContext();
 
   function handleDelete(habitData) {
     const confirm = window.confirm("Tem certeza que quer deletar esse hábito?");

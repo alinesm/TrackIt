@@ -1,23 +1,17 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import logo from "../assets/images/TrackIt.png";
 import Habit from "../components/Habit";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import { useGlobalContext } from "../context";
 
 function TodayPage() {
-  const { setToken, token, photo, setPhoto } = useGlobalContext();
-
-  const [todayHabits, setTodayHabits] = useState([]);
-  const [checkedIds, setCheckedIds] = useState([]);
-  const [dones, setDones] = useState(0);
+  const { token, todayHabits, setTodayHabits, done, percentageDones } =
+    useGlobalContext();
+  const [isLoading, setIsLoading] = useState(false);
   const today = dayjs().locale("pt-br").format("dddd, DD/MM");
-  const percentageDones = Math.round((dones / todayHabits.length) * 100);
 
   useEffect(() => {
     const URL =
@@ -33,25 +27,14 @@ function TodayPage() {
 
     promise.then((res) => setTodayHabits(res.data));
     promise.catch((err) => console.log(err.response.data));
-  }, []);
-
-  // console.log(Math.round((dones / todayHabits.length) * 100));
+  }, [isLoading]);
 
   return (
     <MainContainer>
-      <HeaderStyle>
-        <LogoStyle>
-          <img src={logo} alt="" />
-        </LogoStyle>
-        <PhotoStyle>
-          <img src={photo} alt="" />
-        </PhotoStyle>
-      </HeaderStyle>
-
       <ContentStyle>
         <Container>
           <h1>{today[0].toUpperCase() + today.slice(1)}</h1>
-          {dones > 0 ? (
+          {done.length > 0 ? (
             <h2>{percentageDones}% dos hábitos concluídos</h2>
           ) : (
             <p>Nenhum hábito concluído ainda</p>
@@ -59,44 +42,9 @@ function TodayPage() {
         </Container>
 
         {todayHabits.map((h) => (
-          <Habit
-            tHabits={h}
-            checkedIds={checkedIds}
-            setCheckedIds={setCheckedIds}
-            dones={dones}
-            setDones={setDones}
-            token={token}
-          />
+          <Habit tHabits={h} setIsLoading={setIsLoading} />
         ))}
       </ContentStyle>
-
-      <FooterStyle>
-        <Link to="/habitos">
-          <p>Hábitos</p>
-        </Link>
-
-        <Link to="/hoje">
-          <div>
-            <CircularProgressbar
-              value={percentageDones}
-              text="Hoje"
-              background
-              backgroundPadding={6}
-              styles={buildStyles({
-                backgroundColor: "#3e98c7",
-                textColor: "#fff",
-                pathColor: "#fff",
-                trailColor: "transparent",
-                textSize: "20px",
-              })}
-            />
-          </div>
-        </Link>
-
-        <Link to="/historico">
-          <p>Histórico</p>
-        </Link>
-      </FooterStyle>
     </MainContainer>
   );
 }
@@ -106,38 +54,6 @@ export default TodayPage;
 const MainContainer = styled.div`
   width: 375px;
 `;
-
-const HeaderStyle = styled.div`
-  position: fixed;
-  width: 375px;
-  z-index: 1;
-  height: 70px;
-  top: 0px;
-  background: #126ba5;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-`;
-
-const LogoStyle = styled.div`
-  img {
-    width: 97px;
-    height: 35px;
-  }
-`;
-
-const PhotoStyle = styled.div`
-  img {
-    width: 51px;
-    height: 51px;
-    left: 306px;
-    top: 9px;
-    border-radius: 98.5px;
-  }
-`;
-
 const ContentStyle = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
@@ -151,37 +67,6 @@ const ContentStyle = styled.div`
     font-size: 17.976px;
     line-height: 22px;
     color: #bababa;
-  }
-`;
-
-const FooterStyle = styled.div`
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 375px;
-  height: 70px;
-  position: fixed;
-  bottom: 0;
-  z-index: 2;
-  background: #ffffff;
-  p {
-    font-family: "Lexend Deca";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 17.976px;
-    line-height: 22px;
-    text-align: center;
-    color: #52b6ff;
-  }
-  div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 91px;
-    height: 91px;
-    z-index: 5;
-    margin-bottom: 50px;
   }
 `;
 

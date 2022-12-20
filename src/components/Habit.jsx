@@ -1,13 +1,11 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import checkImage from "../assets/images/Vector.png";
 import { useGlobalContext } from "../context";
 
-function Habit({ tHabits, checkedIds, setCheckedIds, dones, setDones }) {
-  const { setToken, token } = useGlobalContext();
-
-  const [isDone, setIsDone] = useState(tHabits.done);
+function Habit({ tHabits, setIsLoading }) {
+  const { token } = useGlobalContext();
 
   function handleCheckBox() {
     let body = {};
@@ -17,32 +15,30 @@ function Habit({ tHabits, checkedIds, setCheckedIds, dones, setDones }) {
       },
     };
 
-    if (checkedIds.includes(tHabits.id)) {
-      const filtercheckeds = checkedIds.filter((s) => s !== tHabits.id);
-      setCheckedIds([...filtercheckeds]);
-      console.log(filtercheckeds);
-      const doness = filtercheckeds.length;
-      setDones(doness);
-
+    if (tHabits.done) {
+      setIsLoading(true);
       const url_post_checked = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${tHabits.id}/uncheck`;
       const promise = axios.post(url_post_checked, body, config);
       promise.then((res) => {
         console.log(res);
+        setIsLoading(false);
       });
-      promise.catch((err) => console.log(err.response.data));
+      promise.catch((err) => {
+        console.log(err.response.data);
+        setIsLoading(false);
+      });
     } else {
-      const auxArr = [...checkedIds, tHabits.id];
-      setCheckedIds(auxArr);
-      console.log(auxArr);
-      const doness = auxArr.length;
-      setDones(doness);
-
+      setIsLoading(true);
       const url_post_unchecked = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${tHabits.id}/check`;
       const promise = axios.post(url_post_unchecked, body, config);
       promise.then((res) => {
         console.log(res);
+        setIsLoading(false);
       });
-      promise.catch((err) => console.log(err.response.data));
+      promise.catch((err) => {
+        console.log(err.response.data);
+        setIsLoading(false);
+      });
     }
   }
 
@@ -72,7 +68,8 @@ function Habit({ tHabits, checkedIds, setCheckedIds, dones, setDones }) {
       </ContainerTexts>
 
       <ButtonStyle
-        colorBoxCheck={checkedIds.includes(tHabits.id)}
+        // colorBoxCheck={checkedIds.includes(tHabits.id)}
+        colorBoxCheck={tHabits.done}
         onClick={handleCheckBox}
       >
         <img src={checkImage} alt="" />
