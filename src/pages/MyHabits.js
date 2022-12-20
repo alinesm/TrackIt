@@ -131,56 +131,58 @@ function MyHabits() {
           </button>
         </Container>
 
-        {openAdd && (
-          <AddHabitStyle data-test="habit-create-container">
-            <input
-              data-test="habit-name-input"
-              type="text"
-              onChange={(e) => setHabitName(e.target.value)}
-              value={habitName}
-              placeholder="nome do hábito"
-              disabled={isLoading}
-            />
-            <WeekdaysStyle>
-              {weekDay.map((w) => (
-                <ButtonStyle
-                  data-test="habit-day"
-                  colorweek={listWeeks.includes(w.id)}
-                  onClick={() => handleWeekday(w)}
+        <div data-test="habit-create-container">
+          {openAdd && (
+            <AddHabitStyle data-test="habit-create-container">
+              <input
+                data-test="habit-name-input"
+                type="text"
+                onChange={(e) => setHabitName(e.target.value)}
+                value={habitName}
+                placeholder="nome do hábito"
+                disabled={isLoading}
+              />
+              <WeekdaysStyle>
+                {weekDay.map((w) => (
+                  <ButtonStyle
+                    data-test="habit-day"
+                    colorweek={listWeeks.includes(w.id)}
+                    onClick={() => handleWeekday(w)}
+                  >
+                    {w.name}
+                  </ButtonStyle>
+                ))}
+              </WeekdaysStyle>
+              <SaveCancelStyle>
+                <p
+                  data-test="habit-create-cancel"
+                  disabled={isLoading}
+                  onClick={() => setOpenAdd(false)}
                 >
-                  {w.name}
-                </ButtonStyle>
-              ))}
-            </WeekdaysStyle>
-            <SaveCancelStyle>
-              <p
-                data-test="habit-create-cancel"
-                disabled={isLoading}
-                onClick={() => setOpenAdd(false)}
-              >
-                Cancelar
-              </p>
-              <button
-                data-test="habit-create-save"
-                disabled={isLoading}
-                onClick={saveHabit}
-              >
-                {isLoading ? (
-                  <ThreeDots
-                    height="15"
-                    width="50"
-                    radius="6"
-                    color="#fff"
-                    ariaLabel="Loading"
-                    visible={true}
-                  />
-                ) : (
-                  "Salvar"
-                )}{" "}
-              </button>
-            </SaveCancelStyle>
-          </AddHabitStyle>
-        )}
+                  Cancelar
+                </p>
+                <button
+                  data-test="habit-create-save"
+                  disabled={isLoading}
+                  onClick={saveHabit}
+                >
+                  {isLoading ? (
+                    <ThreeDots
+                      height="15"
+                      width="50"
+                      radius="6"
+                      color="#fff"
+                      ariaLabel="Loading"
+                      visible={true}
+                    />
+                  ) : (
+                    "Salvar"
+                  )}{" "}
+                </button>
+              </SaveCancelStyle>
+            </AddHabitStyle>
+          )}
+        </div>
         {listHabits.length > 0 ? (
           listHabits.map((h) => (
             <TodoHabit
@@ -304,7 +306,7 @@ const SaveCancelStyle = styled.div`
   margin-top: 20px;
   p {
     display: flex;
-    margin: auto 0;
+    margin: auto 9px auto 0;
     width: 69px;
     height: 20px;
     font-family: "Lexend Deca";
