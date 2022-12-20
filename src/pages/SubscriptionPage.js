@@ -46,6 +46,7 @@ function Home() {
       <InputsContainer>
         <form>
           <input
+            data-test="email-input"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
             type="email"
@@ -53,6 +54,7 @@ function Home() {
             disabled={isLoading}
           />
           <input
+            data-test="password-input"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             type="password"
@@ -60,6 +62,7 @@ function Home() {
             disabled={isLoading}
           />
           <input
+            data-test="user-name-input"
             onChange={(e) => setName(e.target.value)}
             value={name}
             type="text"
@@ -67,13 +70,18 @@ function Home() {
             disabled={isLoading}
           />
           <input
+            data-test="user-image-input"
             onChange={(e) => setPhoto(e.target.value)}
             value={photo}
             type="url"
             placeholder="foto"
             disabled={isLoading}
           />
-          <button type="submit" onClick={handleSubscription}>
+          <button
+            data-test="signup-btn"
+            type="submit"
+            onClick={handleSubscription}
+          >
             {isLoading ? (
               <ThreeDots
                 height="15"
@@ -88,7 +96,7 @@ function Home() {
           </button>
         </form>
       </InputsContainer>
-      <Link to="/">
+      <Link data-test="login-link" to="/">
         <p>Já tem uma conta? Faça login!</p>
       </Link>
     </Container>

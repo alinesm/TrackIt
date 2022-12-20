@@ -8,7 +8,7 @@ function Header() {
 
   if (token) {
     return (
-      <HeaderStyle>
+      <HeaderStyle data-test="header">
         <LogoStyle>
           <img src={logo} alt="" />
         </LogoStyle>

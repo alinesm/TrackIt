@@ -46,6 +46,7 @@ function Home() {
       <InputsContainer>
         <form>
           <input
+            data-test="email-input"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
             type="email"
@@ -53,13 +54,14 @@ function Home() {
             disabled={isLoading}
           />
           <input
+            data-test="password-input"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             type="password"
             placeholder="senha..."
             disabled={isLoading}
           />
-          <button type="submit" onClick={handleLogin}>
+          <button data-test="login-btn" type="submit" onClick={handleLogin}>
             {isLoading ? (
               <ThreeDots
                 height="15"
@@ -74,7 +76,7 @@ function Home() {
           </button>
         </form>
       </InputsContainer>
-      <Link to="/cadastro">
+      <Link data-test="signup-link" to="/cadastro">
         <p>Não tem uma conta? Cadastre-se!</p>
       </Link>
     </Container>
@@ -118,14 +120,13 @@ const InputsContainer = styled.div`
     border: 1px solid #d5d5d5;
     border-radius: 5px;
     margin-bottom: 6px;
-    padding-left: 11px;
     font-family: "Lexend Deca";
     font-style: normal;
     font-weight: 400;
     font-size: 19.976px;
     line-height: 25px;
-    /* color: #dbdbdb; */
     &::placeholder {
+      padding-left: 11px;
       font-family: "Lexend Deca";
       font-style: normal;
       font-weight: 400;

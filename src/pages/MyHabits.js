@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
+import { ThreeDots } from "react-loader-spinner";
 import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/images/TrackIt.png";
@@ -85,7 +86,7 @@ function MyHabits() {
     };
 
     if (listWeeks.length === 0) {
-      alert("Selecione pelo menos um assento");
+      alert("Selecione pelo um dia");
     } else {
       const url_post =
         "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
@@ -95,14 +96,19 @@ function MyHabits() {
           Authorization: `Bearer ${token}`,
         },
       };
+      setIsLoading(true);
       const promise = axios.post(url_post, body, config);
       promise.then((res) => {
-        const aux = [...listHabits, res.data];
+        const aux = [...listHabits, res.data].reverse();
         setListHabits(aux);
+        setIsLoading(false);
         console.log("aux", aux);
         console.log("data", res.data);
       });
-      promise.catch((err) => console.log(err.response.data));
+      promise.catch((err) => {
+        setIsLoading(false);
+        console.log(err.response.data);
+      });
 
       setHabitName("");
       setListWeeks([]);
@@ -115,20 +121,28 @@ function MyHabits() {
       <ContentStyle>
         <Container>
           <h1>Meus hábitos</h1>
-          <button onClick={() => setOpenAdd(!openAdd)}>+</button>
+          <button
+            data-test="habit-create-btn"
+            onClick={() => setOpenAdd(!openAdd)}
+          >
+            +
+          </button>
         </Container>
 
         {openAdd && (
-          <AddHabitStyle>
+          <AddHabitStyle data-test="habit-create-container">
             <input
+              data-test="habit-name-input"
               type="text"
               onChange={(e) => setHabitName(e.target.value)}
               value={habitName}
               placeholder="nome do hábito"
+              disabled={isLoading}
             />
             <WeekdaysStyle>
               {weekDay.map((w) => (
                 <ButtonStyle
+                  data-test="habit-day"
                   colorweek={listWeeks.includes(w.id)}
                   onClick={() => handleWeekday(w)}
                 >
@@ -137,20 +151,45 @@ function MyHabits() {
               ))}
             </WeekdaysStyle>
             <SaveCancelStyle>
-              <p onClick={() => setOpenAdd(false)}>Cancelar</p>
-              <button onClick={saveHabit}>Salvar</button>
+              <p
+                data-test="habit-create-cancel"
+                disabled={isLoading}
+                onClick={() => setOpenAdd(false)}
+              >
+                Cancelar
+              </p>
+              <button
+                data-test="habit-create-save"
+                disabled={isLoading}
+                onClick={saveHabit}
+              >
+                {isLoading ? (
+                  <ThreeDots
+                    height="15"
+                    width="50"
+                    radius="6"
+                    color="#fff"
+                    ariaLabel="Loading"
+                    visible={true}
+                  />
+                ) : (
+                  "Salvar"
+                )}{" "}
+              </button>
             </SaveCancelStyle>
           </AddHabitStyle>
         )}
         {listHabits.length > 0 ? (
-          listHabits.map((h) => (
-            <TodoHabit
-              habitData={h}
-              listHabits={listHabits}
-              setListHabits={setListHabits}
-              setIsLoading={setIsLoading}
-            />
-          ))
+          listHabits
+            .reverse()
+            .map((h) => (
+              <TodoHabit
+                habitData={h}
+                listHabits={listHabits}
+                setListHabits={setListHabits}
+                setIsLoading={setIsLoading}
+              />
+            ))
         ) : (
           <p>
             {" "}
@@ -166,7 +205,7 @@ function MyHabits() {
 export default MyHabits;
 
 const ContentStyle = styled.div`
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   padding: 110px 20px 50px 20px;
   height: calc(100vh - 80px);
@@ -185,6 +224,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 20px;
   h1 {
     font-family: "Lexend Deca";
     font-style: normal;
@@ -231,6 +271,7 @@ const ButtonStyle = styled.button`
 const AddHabitStyle = styled.div`
   box-sizing: border-box;
   margin-top: 22px;
+  margin-bottom: 20px;
   padding: 20px 15px;
   width: 340px;
   height: 180px;

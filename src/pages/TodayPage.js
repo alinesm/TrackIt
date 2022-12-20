@@ -33,16 +33,22 @@ function TodayPage() {
     <MainContainer>
       <ContentStyle>
         <Container>
-          <h1>{today[0].toUpperCase() + today.slice(1)}</h1>
+          <h1 data-test="today">{today[0].toUpperCase() + today.slice(1)}</h1>
           {done.length > 0 ? (
-            <h2>{percentageDones}% dos hábitos concluídos</h2>
+            <h2 data-test="today-counter">
+              {percentageDones}% dos hábitos concluídos
+            </h2>
           ) : (
-            <p>Nenhum hábito concluído ainda</p>
+            <p data-test="today-counter">Nenhum hábito concluído ainda</p>
           )}
         </Container>
 
         {todayHabits.map((h) => (
-          <Habit tHabits={h} setIsLoading={setIsLoading} />
+          <Habit
+            tHabits={h}
+            setIsLoading={setIsLoading}
+            isLoading={isLoading}
+          />
         ))}
       </ContentStyle>
     </MainContainer>
@@ -55,7 +61,7 @@ const MainContainer = styled.div`
   width: 375px;
 `;
 const ContentStyle = styled.div`
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   padding: 110px 20px 50px 20px;
   height: calc(100vh - 80px);

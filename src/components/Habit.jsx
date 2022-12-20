@@ -3,8 +3,9 @@ import React from "react";
 import styled from "styled-components";
 import checkImage from "../assets/images/Vector.png";
 import { useGlobalContext } from "../context";
+import { ThreeDots } from "react-loader-spinner";
 
-function Habit({ tHabits, setIsLoading }) {
+function Habit({ tHabits, setIsLoading, isLoading }) {
   const { token } = useGlobalContext();
 
   function handleCheckBox() {
@@ -43,18 +44,16 @@ function Habit({ tHabits, setIsLoading }) {
   }
 
   return (
-    <Container>
+    <Container data-test="today-habit-container">
       <ContainerTexts>
-        <h2>{tHabits.name}</h2>
-        <CurrentSequence>
+        <h2 data-test="today-habit-name">{tHabits.name}</h2>
+        <CurrentSequence data-test="today-habit-sequence">
           sequencia atual:{" "}
           <SpanStyle colorSequence={tHabits.currentSequence > 0}>
-            {tHabits.currentSequence}
+            {tHabits.currentSequence} dias
           </SpanStyle>{" "}
         </CurrentSequence>
-        <HighestSequence
-        // colorSequences2={tHabits.currentSequence === tHabits.highestSequence}
-        >
+        <HighestSequence data-test="today-habit-record">
           Seu recorde:{" "}
           <SpanStyle2
             colorRecord={
@@ -62,17 +61,28 @@ function Habit({ tHabits, setIsLoading }) {
               tHabits.done
             }
           >
-            {tHabits.highestSequence}
-          </SpanStyle2>
+            {tHabits.highestSequence} dias
+          </SpanStyle2>{" "}
         </HighestSequence>
       </ContainerTexts>
 
       <ButtonStyle
-        // colorBoxCheck={checkedIds.includes(tHabits.id)}
+        data-test="today-habit-check-btn"
         colorBoxCheck={tHabits.done}
         onClick={handleCheckBox}
       >
-        <img src={checkImage} alt="" />
+        {isLoading ? (
+          <ThreeDots
+            height="15"
+            width="50"
+            radius="6"
+            color="#fff"
+            ariaLabel="Loading"
+            visible={true}
+          />
+        ) : (
+          <img src={checkImage} alt="" />
+        )}
       </ButtonStyle>
     </Container>
   );
@@ -107,6 +117,7 @@ const ButtonStyle = styled.button`
   border: 1px solid #e7e7e7;
   border-radius: 5px;
 `;
+
 const ContainerTexts = styled.div`
   h2 {
     font-family: "Lexend Deca";

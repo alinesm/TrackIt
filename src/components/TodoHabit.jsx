@@ -69,14 +69,22 @@ function TodoHabit({ habitData, listHabits, setListHabits, setIsLoading }) {
   }
 
   return (
-    <Container>
+    <Container data-test="habit-container">
       <AuxContainer>
-        <h2>{habitData.name}</h2>
-        <FaTrashAlt color="#666666" onClick={() => handleDelete(habitData)} />
+        <h2 data-test="habit-name">{habitData.name}</h2>
+        <div
+          data-test="habit-delete-btn"
+          onClick={() => handleDelete(habitData)}
+        >
+          <FaTrashAlt color="#666666" />
+        </div>
       </AuxContainer>
       <WeekdaysStyle>
         {weekDay.map((w) => (
-          <ButtonStyle colorweek={habitData.days.includes(w.id)}>
+          <ButtonStyle
+            data-test="habit-day"
+            colorweek={habitData.days.includes(w.id)}
+          >
             {w.name}
           </ButtonStyle>
         ))}

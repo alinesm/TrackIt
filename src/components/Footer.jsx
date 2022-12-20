@@ -9,12 +9,12 @@ function Footer() {
 
   if (token) {
     return (
-      <FooterStyle>
-        <Link to="/habitos">
+      <FooterStyle data-test="menu">
+        <Link data-test="habit-link" to="/habitos">
           <p>Hábitos</p>
         </Link>
 
-        <Link to="/hoje">
+        <Link data-test="today-link" to="/hoje">
           <div>
             <CircularProgressbar
               value={percentageDones}
@@ -32,7 +32,7 @@ function Footer() {
           </div>
         </Link>
 
-        <Link to="/historico">
+        <Link data-test="history-link" to="/historico">
           <p>Histórico</p>
         </Link>
       </FooterStyle>
