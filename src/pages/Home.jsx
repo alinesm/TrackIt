@@ -7,7 +7,7 @@ import { ThreeDots } from "react-loader-spinner";
 import { useGlobalContext } from "../context";
 
 function Home() {
-  const { setToken, token } = useGlobalContext();
+  const { setToken, token, setUserInfo } = useGlobalContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -30,6 +30,13 @@ function Home() {
     const promise = axios.post(URL, body);
     promise.then((res) => {
       setToken(res.data.token);
+      setUserInfo({
+        email: res.data.email,
+        name: res.data.name,
+        image: res.data.image,
+        password: res.data.password,
+      });
+
       navigate("/hoje");
     });
     promise.catch((err) => handleError(err));

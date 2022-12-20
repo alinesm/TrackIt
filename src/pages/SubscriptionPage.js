@@ -7,8 +7,6 @@ import { ThreeDots } from "react-loader-spinner";
 import { useGlobalContext } from "../context";
 
 function Home() {
-  const { setUserInfo } = useGlobalContext();
-
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +26,6 @@ function Home() {
     const URL =
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
     const body = { email: email, name: name, image: image, password: password };
-    setUserInfo({ email: email, name: name, image: image, password: password });
 
     const promise = axios.post(URL, body);
     promise.then((res) => {
